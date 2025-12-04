@@ -1,71 +1,73 @@
 # Robot Soccer -- Multi-Agent Python Simulation
 
-## 🎮 Descripción
+## 🎮 Description
 
-Este proyecto simula **11 jugadores de Robot Soccer**, ejecutados como
-**procesos independientes** en Python.\
-Roles incluidos:
+This project simulates **11 Robot Soccer players**, each running as  
+**independent Python processes**.  
+Included roles:
 
--   **1 Arquero**
--   **4 Defensas**
--   **6 Atacantes**
+- **1 Goalkeeper**  
+- **4 Defenders**  
+- **6 Attackers**
 
-El script `manager.py` lanza y administra todos los procesos. Cada
-jugador ejecuta su propio comportamiento definido en `players/`.
-
-------------------------------------------------------------------------
-
-## 📁 Estructura del Proyecto
-
-    robot_soccer/
-    │
-    ├── requirements.txt
-    ├── run_all.sh
-    ├── manager.py
-    │
-    └── players/
-        ├── base_player.py
-        ├── defender.py
-        ├── attacker.py
-        ├── goalkeeper.py
+The `manager.py` script launches and manages all processes. Each  
+player executes its own behavior defined in the `players/` folder.
 
 ------------------------------------------------------------------------
 
-## 🐍 Crear entorno virtual
+## 📁 Project Structure
 
-``` bash
+```
+robot_soccer/
+│
+├── requirements.txt
+├── run_all.sh
+├── manager.py
+│
+└── players/
+    ├── base_player.py
+    ├── defender.py
+    ├── attacker.py
+    ├── goalkeeper.py
+```
+
+------------------------------------------------------------------------
+
+## 🐍 Create Virtual Environment
+
+```bash
 python3 -m venv env
 source env/bin/activate
 ```
 
-Desactivar:
+Deactivate:
 
-``` bash
+```bash
 deactivate
 ```
 
 ------------------------------------------------------------------------
 
-## 📦 Instalar dependencias
+## 📦 Install Dependencies
 
-``` bash
+```bash
 pip install -r requirements.txt
 ```
 
 ------------------------------------------------------------------------
 
-## ▶️ Ejecución
+## ▶️ Execution
 
-### Usando el script `.sh`
+### Using the `.sh` Script
 
-``` bash
+```bash
 chmod +x run_all.sh
 ./run_all.sh
 ```
 
-### O ejecutando el manager:
+### Or Running the Manager:
 
-``` bash
+```bash
 python3 manager.py
 ```
 
@@ -73,19 +75,21 @@ python3 manager.py
 
 ## 📡 Logs
 
-Cada proceso imprime mensajes como:
+Each process prints messages like:
 
-    [DEFENDER #2] Defendiendo zona...
-    [ATTACKER #5] Atacando y buscando gol...
-    [GOALKEEPER #1] Protegiendo el arco...
+```
+[DEFENDER #2] Defending the zone...
+[ATTACKER #5] Attacking and going for goal...
+[GOALKEEPER #1] Protecting the goal...
+```
 
 ------------------------------------------------------------------------
 
-## 🧩 Personalización
+## 🧩 Customization
 
-Edita `manager.py` para cambiar las cantidades:
+Edit `manager.py` to change the numbers:
 
-``` python
+```python
 ROLES = {
     "goalkeeper": 1,
     "defender": 4,
@@ -95,6 +99,7 @@ ROLES = {
 
 ------------------------------------------------------------------------
 
-## ❤️ Contribuciones
+## ❤️ Contributions
 
-Puedes agregar IA, sockets, estrategias o nuevas posiciones.
+You can add AI, sockets, strategies, or new positions.
+
