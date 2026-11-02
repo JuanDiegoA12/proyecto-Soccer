@@ -1,4 +1,5 @@
 import subprocess
+import sys
 import time
 
 ROLES = {"goalkeeper": 1, "defender": 4, "attacker": 6}
@@ -7,7 +8,7 @@ ROLES = {"goalkeeper": 1, "defender": 4, "attacker": 6}
 def launch_player(role, number):
     path = f"players/{role}.py"
     proc = subprocess.Popen(
-        ["python3", path, str(number), role],
+        [sys.executable, path, str(number), role],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,

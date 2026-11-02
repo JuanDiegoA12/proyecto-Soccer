@@ -1,20 +1,9 @@
-from base_player import BasePlayer
+from qlearner import QLearner
 import sys
-import random
 
 
-class Attacker(BasePlayer):
-    def play(self):
-        ACTIONS = ["turn_left", "turn_right", "dash", "kick"]
-        action = random.choice(ACTIONS)
-        if action == "turn_left":
-            self.send("(turn -45)")
-        elif action == "turn_right":
-            self.send("(turn 45)")
-        elif action == "dash":
-            self.send("(dash 60)")
-        elif action == "kick":
-            self.send("(kick 80 0)")
+class Attacker(QLearner):
+    pass
 
 
 if __name__ == "__main__":

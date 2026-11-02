@@ -40,12 +40,14 @@ class QLearner(BasePlayer):
 
         self.prev_state = None
         self.prev_action = None
-        self.prev_dist = None
+        self.prev_ball = None
 
         self.rng = np.random.default_rng()
 
+        self.q_table_file = f"q_table_{self.role}_{self.number}.csv"
+
     def parse_ball(self, msg):
-        match = re.search(r"\(\(b\)\s+([-\d.]+)\s+([-\d.]+)", msg)
+        match = re.search(r"\(\((?:b|ball|B)\)\s+([-\d.]+)\s+([-\d.]+)", msg)
         if not match:
             return None
         distancia = float(match.group(1))
@@ -74,24 +76,28 @@ class QLearner(BasePlayer):
 
         return f"{a}_{d}"
 
-    def reward(self, ball):
+    def reward(self, ball, action_idx, prev_ball):
         if ball is None:
-            self.prev_dist = None
             return -1.0
 
         distancia, angulo = ball
+        action = ACTIONS[action_idx]
         r = 0.0
 
-        if self.prev_dist is not None:
-            if distancia < self.prev_dist:
+        if prev_ball is not None:
+            prev_dist, prev_ang = prev_ball
+            if distancia < prev_dist:
                 r += 1.0
             else:
                 r -= 1.0
 
-        if abs(angulo) <= 10:
-            r += 0.5
+            if action == "dash" and abs(prev_ang) <= 10:
+                r += 1.5
+            elif action == "turn_left" and prev_ang < -10:
+                r += 0.5
+            elif action == "turn_right" and prev_ang > 10:
+                r += 0.5
 
-        self.prev_dist = distancia
         return r
 
     def choose_action(self, state_idx):
@@ -117,11 +123,19 @@ class QLearner(BasePlayer):
         msg = getattr(self, "last_msg", "")
 
         ball = self.parse_ball(msg)
+
+        if ball is None:
+            self.send("(turn 60)")
+            self.prev_state = None
+            self.prev_action = None
+            self.prev_ball = None
+            return
+
         state = self.to_state(ball)
         state_idx = STATE_INDEX[state]
 
         if self.prev_state is not None:
-            r = self.reward(ball)
+            r = self.reward(ball, self.prev_action, self.prev_ball)
             self.update_q(self.prev_state, self.prev_action, r, state_idx)
 
         action_idx = self.choose_action(state_idx)
@@ -129,9 +143,11 @@ class QLearner(BasePlayer):
 
         self.prev_state = state_idx
         self.prev_action = action_idx
+        self.prev_ball = ball
 
     def action_loop(self):
         steps = 0
+        self.send("(change_view wide normal)")
         while True:
             msg = self.receive(timeout=2)
 
@@ -152,8 +168,8 @@ class QLearner(BasePlayer):
 
     def save_q_table(self):
         df = pd.DataFrame(self.q, index=STATES, columns=ACTIONS)
-        df.to_csv(Q_TABLE_FILE)
-        print(f"[{self.role}-{self.number}] Q-table guardada en {Q_TABLE_FILE}")
+        df.to_csv(self.q_table_file)
+        print(f"[{self.role}-{self.number}] Q-table guardada en {self.q_table_file}")
 
 
 if __name__ == "__main__":
