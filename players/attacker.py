@@ -5,7 +5,6 @@ import random
 
 class Attacker(BasePlayer):
     def play(self):
-        """Atacantes avanzan hacia la portería rival"""
         ACTIONS = ["turn_left", "turn_right", "dash", "kick"]
         action = random.choice(ACTIONS)
         if action == "turn_left":

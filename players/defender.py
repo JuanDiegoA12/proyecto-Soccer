@@ -5,7 +5,6 @@ import random
 
 class Defender(BasePlayer):
     def play(self):
-        """Defensas se mueven y giran aleatoriamente"""
         ACTIONS = ["turn_left", "turn_right", "dash", "kick"]
         action = random.choice(ACTIONS)
         if action == "turn_left":

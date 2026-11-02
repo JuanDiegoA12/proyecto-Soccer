@@ -4,8 +4,7 @@ import sys
 
 class Goalkeeper(BasePlayer):
     def play(self):
-        """Arquero se queda en el arco y gira un poco la cabeza"""
-        self.send("(turn 10)")  # mirar a la derecha lentamente
+        self.send("(turn 10)")
 
 
 if __name__ == "__main__":
